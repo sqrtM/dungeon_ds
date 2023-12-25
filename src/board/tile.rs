@@ -5,6 +5,7 @@ impl Tile {
         Self {
             tile_type: tt,
             default_char: tt.get_char(),
+            items: None,
             elevation: elev,
         }
     }
@@ -15,6 +16,7 @@ impl Default for Tile {
         Self {
             tile_type: TileType::WALL,
             default_char: '#',
+            items: None,
             elevation: 0.0,
         }
     }
