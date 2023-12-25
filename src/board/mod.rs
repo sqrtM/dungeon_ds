@@ -18,7 +18,7 @@ pub struct Tile {
     pub(crate) elevation: f64,
 }
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 pub enum TileType {
     WALL,
     FLOOR,

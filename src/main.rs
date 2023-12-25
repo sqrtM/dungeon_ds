@@ -2,12 +2,9 @@ mod board;
 mod screens;
 
 use crate::board::map::Create;
-use crate::board::GameMap;
+use crate::board::{GameMap, Tile};
 use crate::screens::Screens;
 use ctru::prelude::*;
-
-static BOTTOM_SCREEN_DIMENSIONS: (usize, usize) = (40, 30);
-static TOP_SCREEN_DIMENSIONS: (usize, usize) = (50, 30);
 
 fn main() {
     let apt = Apt::new().unwrap();
@@ -19,9 +16,8 @@ fn main() {
         Console::new(gfx.bottom_screen.borrow_mut()),
     );
     let map: GameMap = GameMap::create();
-
-    screens.top.select();
-    println!("This is the top screen! There are some tiles in the map!!",);
+    let mut selected_tile = ((0, 0), Tile::default());
+    let mut old_touch_position = (0, 0);
 
     screens.top.select();
     println!("\x1b[29;16HPress Start to exit");
@@ -35,13 +31,25 @@ fn main() {
         if hid.keys_down().contains(KeyPad::START) {
             break;
         }
+
+        let touch = hid.touch_position();
+        if touch != old_touch_position {
+            old_touch_position = touch;
+            match screens.get_touched_tile(touch, &map) {
+                Some(touched_tile) => {
+                    screens.redraw_selected_tile(touched_tile.0, &touched_tile.1);
+                    selected_tile = touched_tile
+                }
+                None => {}
+            };
+        }
     }
 }
 
 #[cfg(test)]
 mod tests {
     #[test]
-    fn test_add_numbers() {
+    fn test_basic() {
         assert_eq!(2, 2);
     }
 }
