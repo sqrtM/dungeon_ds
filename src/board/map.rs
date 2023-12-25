@@ -6,12 +6,10 @@ pub trait Create {
 
 impl Create for GameMap {
     fn create() -> Self {
-        let mut map: GameMap = Default::default();
-        for row in map.iter_mut() {
-            for cell in row.borrow_mut().iter_mut() {
-                *cell = Tile::default();
-            }
+        let mut map = vec![];
+        for i in 0..10 {
+            map.push(vec![Tile::default(); 10]);
         }
-        map
+        Box::new(map)
     }
 }
