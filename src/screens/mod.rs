@@ -1,8 +1,8 @@
 use crate::board::Tile;
 use crate::entities::{Entities, Entity};
 use ctru::console::Console;
-use std::io::Read;
-use std::iter;
+use std::io::{Read, Write};
+use std::{io, iter};
 
 static TOP_SCREEN_DIMENSIONS: (usize, usize) = (50, 30);
 static BOTTOM_SCREEN_DIMENSIONS: (usize, usize) = (40, 30);
@@ -34,12 +34,10 @@ impl<'screen> Screens<'screen> {
 
         visible_map.iter().enumerate().for_each(|(i, row)| {
             row.iter().enumerate().for_each(|(j, tile)| {
-                let to_draw = if entity_locations.contains(&(i, j)) {
-                    '@'
-                } else {
-                    '#'
-                };
+                let to_draw = if (j, i) == player.location { '@' } else { '#' };
+                print!("\x1B[{};{}H", j, i);
                 print!("{}", to_draw);
+                //io::stdout().flush().unwrap();
             });
             println!();
         })

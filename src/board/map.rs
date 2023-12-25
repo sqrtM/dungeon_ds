@@ -9,7 +9,7 @@ impl Create for TileMap {
         let mut map = vec![];
         for _ in 0..24 {
             let mut row = vec![];
-            for _ in 0..32 {
+            for _ in 0..24 {
                 row.push(Tile::default());
             }
             map.push(row);

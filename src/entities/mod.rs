@@ -31,18 +31,18 @@ impl Entity {
         } else if key_pad.contains(KeyPad::DPAD_DOWN) {
             self._move(S)
         } else if key_pad.contains(KeyPad::DPAD_LEFT) {
-            self._move(E)
-        } else if key_pad.contains(KeyPad::DPAD_RIGHT) {
             self._move(W)
+        } else if key_pad.contains(KeyPad::DPAD_RIGHT) {
+            self._move(E)
         }
     }
 
     fn _move(&mut self, dir: Direction) {
         match dir {
-            N => self.location.1 -= 1,
-            S => self.location.1 += 1,
-            E => self.location.0 += 1,
-            W => self.location.0 -= 1,
+            N => self.location.0 -= 1,
+            S => self.location.0 += 1,
+            E => self.location.1 += 1,
+            W => self.location.1 -= 1,
         }
     }
 }
