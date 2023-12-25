@@ -4,7 +4,7 @@ mod items;
 mod screens;
 
 use crate::board::map::Create;
-use crate::board::{Tile, TileMap};
+use crate::board::TileMap;
 use crate::entities::{Entities, Entity};
 use crate::screens::Screens;
 use ctru::prelude::*;
@@ -24,8 +24,12 @@ fn main() {
     let entities: Entities = Box::new(vec![]);
 
     let mut old_touch_position = (0, 0);
-
     let mut input_lag = 0;
+
+    screens.display_stats();
+    screens.redraw_map(&map, &player, &entities);
+
+    let mut is_tile_selected = true;
 
     while apt.main_loop() {
         gfx.wait_for_vblank();
@@ -47,13 +51,27 @@ fn main() {
             old_touch_position = touch;
             match screens.get_touched_tile(touch, &map) {
                 Some(touched_tile) => {
-                    screens.redraw_selected_tile(touched_tile.0, &touched_tile.1);
+                    if !is_tile_selected {
+                        screens.clear_top();
+                    }
+                    is_tile_selected = true;
+                    screens.draw_selected_tile(touched_tile.0, &touched_tile.1);
                 }
-                None => {}
+                None => {
+                    is_tile_selected = false;
+                    screens.clear_top()
+                }
             };
+        } else if touch == (0, 0) && old_touch_position != (0, 0) {
+            is_tile_selected = false;
+            screens.clear_top();
+            screens.display_stats();
+            old_touch_position = touch;
         }
 
-        input_lag -= 1;
+        if input_lag > 0 {
+            input_lag -= 1;
+        }
     }
 }
 

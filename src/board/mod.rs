@@ -1,13 +1,21 @@
+mod color;
 pub mod map;
 pub mod tile;
 pub mod tile_type;
 
 use crate::items::Item;
 
-#[derive(Eq, Hash, PartialEq)]
-pub struct Coord {
-    pub(crate) x: usize,
-    pub(crate) y: usize,
+pub enum Color {
+    Black,
+    Red,
+    Green,
+    Yellow,
+    Blue,
+    Magenta,
+    Cyan,
+    White,
+    // Reset to default color
+    AnsiReset,
 }
 
 pub struct Tile {
